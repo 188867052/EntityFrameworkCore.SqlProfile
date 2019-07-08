@@ -14,18 +14,18 @@ using EntityFrameworkCore.SqlProfile; // Add
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddMvc();
-	services.AddDbContext<SqliteDbContext>(options =>
+    services.AddDbContext<SqliteDbContext>(options =>
     {
         options.UseSqlite(Configuration.GetConnectionString("Sqlite"));
         options.UseSqlProfile(); // Add when use Sqlite
     });
-	....
-	services.AddDbContext<SqlServerDbContext>(options =>
+    ....
+    services.AddDbContext<SqlServerDbContext>(options =>
     {
         options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
         options.UseSqlProfile(); // Add when use SqlServer
     });
-	....
+    ....
 }
 ....
 public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -41,7 +41,7 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 ```
 Eg. input https://localhost:44393/logger
 ```
-![screenshot](https://github.com/188867052/EntityFrameworkCore.SqlProfile/blob/master/EntityFrameworkCore.SqlProfile/log.png)
+![screenshot](https://github.com/188867052/EntityFrameworkCore.SqlProfile/blob/master/log.png)
 
 ## Technologies
 
