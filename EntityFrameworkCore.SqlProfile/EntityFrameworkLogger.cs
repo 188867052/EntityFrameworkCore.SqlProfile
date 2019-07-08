@@ -47,6 +47,7 @@ namespace EntityFrameworkCore.SqlProfile
                                 Type = SqlOperateType,
                                 RequestTime = DateTime.Now
                             });
+                            SqlInfoCache = SqlInfoCache.OrderByDescending(o => o.RequestTime).Take(SqlProfileExtention.MaxCount).ToList();
                         }
                     }
                 };

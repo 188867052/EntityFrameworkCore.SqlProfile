@@ -6,11 +6,11 @@ namespace Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ValuesController : Controller
+    public class SqlServerController : Controller
     {
-        private readonly SqliteDBContext dbContext;
+        private readonly SqlServerDbContext dbContext;
 
-        public ValuesController(SqliteDBContext dbContext)
+        public SqlServerController(SqlServerDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -18,14 +18,13 @@ namespace Api.Controllers
         [HttpGet]
         public JsonResult Insert()
         {
-            Category entity = new Category
+            Log entity = new Log
             {
-                Name = "Harry Cheng",
-                Time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
-                Guid = Guid.NewGuid().ToString("N"),
+                Message = "Harry Cheng",
+                CreateTime = DateTime.Now,
             };
 
-            dbContext.Set<Category>().Add(entity);
+            dbContext.Set<Log>().Add(entity);
             dbContext.SaveChanges();
             return Json(entity);
         }
@@ -33,7 +32,7 @@ namespace Api.Controllers
         [HttpGet]
         public JsonResult Select()
         {
-            var data = dbContext.Set<Category>().ToList();
+            var data = dbContext.Set<Log>().ToList();
             if (data.Count > 0)
             {
                 return Json(data);
@@ -46,13 +45,13 @@ namespace Api.Controllers
         [HttpGet]
         public JsonResult Delete()
         {
-            var category = dbContext.Set<Category>().FirstOrDefault();
-            if (category != null)
+            var log = dbContext.Set<Log>().FirstOrDefault();
+            if (log != null)
             {
-                dbContext.Remove(category);
+                dbContext.Remove(log);
                 dbContext.SaveChanges();
 
-                return Json(category);
+                return Json(log);
             }
 
             return Json("Nothing Deleted.");
@@ -61,13 +60,13 @@ namespace Api.Controllers
         [HttpGet]
         public JsonResult Update()
         {
-            var category = dbContext.Set<Category>().FirstOrDefault();
-            if (category != null)
+            var log = dbContext.Set<Log>().FirstOrDefault();
+            if (log != null)
             {
-                category.Time = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                log.CreateTime = DateTime.Now;
                 dbContext.SaveChanges();
 
-                return Json(category);
+                return Json(log);
             }
 
             return Json("Nothing Updated.");

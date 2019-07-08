@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Api
 {
@@ -21,11 +20,15 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SqliteDBContext>(options =>
+            services.AddDbContext<SqliteDbContext>(options =>
             {
-                var loggerFactory = new LoggerFactory();
-                loggerFactory.AddProvider(new EntityFrameworkLoggerProvider());
-                options.UseSqlite(@"Data Source=.\sqliteDB.db").UseLoggerFactory(loggerFactory).EnableSensitiveDataLogging();
+                options.UseSqlite(Configuration.GetConnectionString("Sqlite"));
+                options.UseSqlProfile();
+            });
+            services.AddDbContext<SqlServerDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
+                options.UseSqlProfile();
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

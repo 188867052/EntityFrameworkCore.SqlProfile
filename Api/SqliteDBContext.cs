@@ -1,13 +1,11 @@
-﻿using EntityFrameworkCore.SqlProfile;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Api
 {
-    public class SqliteDBContext : DbContext
+    public class SqliteDbContext : DbContext
     {
         private static bool _created = false;
-        public SqliteDBContext()
+        public SqliteDbContext()
         {
             if (!_created)
             {
@@ -16,17 +14,24 @@ namespace Api
                 Database.EnsureCreated();
             }
         }
+
+        public SqliteDbContext(DbContextOptions<SqliteDbContext> options)
+           : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().ToTable("tb_Category");
         }
+    }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
-        {
-            var loggerFactory = new LoggerFactory();
-            loggerFactory.AddProvider(new EntityFrameworkLoggerProvider());
-            optionbuilder.UseSqlite(@"Data Source=.\sqliteDB.db").UseLoggerFactory(loggerFactory).EnableSensitiveDataLogging();
-        }
+    public class Category
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Guid { get; set; }
+        public string Time { get; set; }
     }
 }
