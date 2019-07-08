@@ -37,7 +37,7 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     });
 }
 ```
-## View Services via Browser
+## View SQL via Browser
 ```
 Eg. input https://localhost:44393/logger
 ```
